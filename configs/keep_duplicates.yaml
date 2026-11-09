@@ -1,0 +1,20 @@
+# Sensitivity check: the baseline with the 125 exact duplicate rows kept.
+name: keep_duplicates
+seed: 5420
+
+data:
+  path: data/raw/online_shoppers_intention.csv
+  drop_duplicates: false
+
+split:
+  test_size: 0.2
+  n_folds: 5
+  path: data/splits/splits_keep_duplicates.csv
+
+logreg:
+  c_grid: {min_exp: -4, max_exp: 4, num: 17}
+  max_iter: 5000
+
+output:
+  results_dir: results/keep_duplicates
+  figure: results/figures/keep_duplicates_pr_curve.png

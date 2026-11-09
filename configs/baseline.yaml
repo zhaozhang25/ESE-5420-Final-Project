@@ -1,0 +1,20 @@
+# Baseline: L2 logistic regression tuned by stratified 5-fold CV.
+name: baseline
+seed: 5420  # fixed in advance; never chosen by looking at scores
+
+data:
+  path: data/raw/online_shoppers_intention.csv
+  drop_duplicates: true
+
+split:
+  test_size: 0.2
+  n_folds: 5
+  path: data/splits/splits.csv
+
+logreg:
+  c_grid: {min_exp: -4, max_exp: 4, num: 17}  # C = 10^min_exp ... 10^max_exp
+  max_iter: 5000
+
+output:
+  results_dir: results/baseline
+  figure: results/figures/baseline_pr_curve.png
