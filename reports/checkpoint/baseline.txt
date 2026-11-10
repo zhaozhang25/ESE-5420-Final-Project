@@ -23,8 +23,9 @@ L2 logistic regression, with C tuned over 17 log-spaced values from 1e-4 to 1e4,
 CV AUPRC (mean +/- SE, where SE = fold SD / sqrt(5)):
 - With PageValues: 0.648 +/- 0.015 (fold SD 0.033)
 - Without PageValues: 0.331 +/- 0.009 (fold SD 0.021)
-- Always-no-purchase floor: 0.156
-Paired by fold, PageValues adds 0.317 +/- 0.014. Fold scores are correlated, so the SEs are approximate, and C was chosen on the same folds, so the means are slightly optimistic. No test score has been computed.
+- Constant score baseline: 0.156
+Removing PageValues reduced AUPRC by 0.317 +/- 0.014. These estimates are approximate because the folds  are correlated, and C was chosen on the same folds, so the means are slightly optimistic. We have not evaluated the test set.
+
 
 ## Issues found
 PageValues: 
