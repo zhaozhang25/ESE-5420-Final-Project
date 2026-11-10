@@ -4,20 +4,20 @@
 ZSC Group. Members: Wenxi, Xingyu, Zhao.
 
 ## Changes since the proposal
-Following the feedback, the question is now whether a tuned MLP raises test AUPRC over tuned logistic regression by more than its error bar; we no longer assume it will. We added a stratified 20% test set, results with and without PageValues (possible leakage), five MLP seeds, and a paired bootstrap of the test AUPRC difference.
+Following the feedback, we revised the question to focus on whether a tuned MLP can outperform logistic regression by more than the uncertainty in their test AUPRC difference. We added a stratified 20% test set, results with and without PageValues (possible leakage), five MLP seeds, and a paired bootstrap of the test AUPRC difference.
 
 ## Data
 
-The UCI Online Shoppers Purchasing Intention dataset contains 12,330 sessions and 18 columns. The 17 predictors describe the session and visitor, and the outcome, Revenue, records whether the session ended in a purchase. We found no missing values. We removed 125 identical rows for the main analysis, leaving 12,205 sessions with a purchase rate of 15.6%.
+We use the UCI Online Shoppers Purchasing Intention dataset contains 12,330 sessions and 18 columns. The 17 predictors describe the session and visitor, and the outcome, Revenue, records whether the session ended in a purchase. We found no missing values. We removed 125 identical rows for the main analysis, leaving 12,205 sessions with a purchase rate of 15.6%.
 
 
 ## Split
 
-Using seed 5420, we split the data into 9,764 development sessions and 2,441 test sessions and preserve the purchase rate in each set. Stratified five fold cross validation was used on the development set and fitted the scaler and one hot encoder within each training fold. The split and fold assignments are saved in data/splits/splits.csv so both models can use the same sessions. The test set remains unscored.
+We used a stratified 80/20 split with seed 5420. We split the data into 9,764 development sessions and 2,441 test sessions and preserve the purchase rate in each set. Stratified five fold cross validation was used on the development set and fitted the scaler and one hot encoder within each training fold. The split and fold assignments are saved in data/splits/splits.csv so both models can use the same sessions. The test set remains unscored.
 
 
 ## Baseline
-L2 logistic regression, with C tuned over 17 log-spaced values from 1e-4 to 1e4, scored by AUPRC. Month, VisitorType, Weekend, OperatingSystems, Browser, Region and TrafficType are one-hot encoded. CV chose C = 0.032 with PageValues and C = 0.1 without.
+Our course baseline is L2 logistic regression, with C tuned over 17 log-spaced values from 1e-4 to 1e4, scored by AUPRC. Month, VisitorType, Weekend, OperatingSystems, Browser, Region and TrafficType are one-hot encoded. The best C was 0.032 with PageValues and 0.1 without it.
 
 ## Result
 CV AUPRC (mean +/- SE, where SE = fold SD / sqrt(5)):
@@ -36,7 +36,8 @@ Duplicates: all 125 are non-purchase bounce sessions, so they may be separate re
 
 
 Rare categories: some have one row, so the encoder ignores unseen levels.
-Time: there is no date or year, and Jan and Apr are absent. Purchase rate varies from 1.6% (Feb) to 25.4% (Nov). Random folds therefore say nothing about future months.
+Time: there is no date or year, and Jan and Apr are absent. Purchase rate varies from 1.6% (Feb) to 25.4% (Nov), making it difficult to evaluate performance in future months.
+
 Pipeline check: over 20 label shuffles, AUPRC is 0.159 +/- 0.001, matching random scores.
 
 ## Next steps
